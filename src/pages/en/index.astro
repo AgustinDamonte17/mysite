@@ -20,7 +20,7 @@ const projects = getProjects(lang).slice(0, 5).map((p) => ({
 }));
 ---
 <BaseLayout lang={lang} description={t.homeIntro} measure="home">
-  <PageTitle title={t.siteTitle} lead={t.homeIntro} />
+  <PageTitle title={t.siteTitle} />
 
   <section class="home-section" aria-labelledby="writing-heading">
     <h2 id="writing-heading" class="home-section__heading">{t.postsHeading}</h2>

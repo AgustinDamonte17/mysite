@@ -23,7 +23,7 @@ const Content = project.Content as any;
   measure="post"
 >
   <article>
-    <PostMeta date={project.frontmatter.year ? String(project.frontmatter.year) : undefined} />
+    <PostMeta lang={lang} date={project.frontmatter.year ? String(project.frontmatter.year) : undefined} />
     <h1 class="post-title">{String(project.frontmatter.title)}</h1>
     <Prose>
       <Content />

@@ -35,7 +35,7 @@
   --space-page-y: 3.5rem;
   --space-section: 3.5rem;
   --space-stack: 1.5rem;
-  --space-header: 1.125rem;
+  --space-header: 1.125rem; /* ~1–1.25rem vertical */
 
   --ease: 160ms ease;
 }
@@ -147,119 +147,105 @@ a:focus-visible {
   padding-bottom: var(--space-8);
 }
 
-/* Header */
+/* Header — centered Lang + Theme cluster, no bar border */
 .site-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3) var(--space-5);
+  justify-content: center;
   padding: var(--space-header) 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 0;
   font-family: var(--font-sans);
 }
 
-.site-header__brand {
-  font-family: var(--font-sans);
-  font-size: var(--text-nav);
-  font-weight: 500;
-  color: var(--fg);
-  text-decoration: none;
-  line-height: 1.3;
-}
-
-.site-header__brand:hover {
-  color: var(--fg-muted);
-}
-
-.site-header__right {
+.site-header__cluster {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-4) var(--space-5);
+  justify-content: center;
+  gap: 1.125rem;
 }
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  font-size: var(--text-nav);
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-.site-nav a {
-  color: var(--fg-muted);
-  text-decoration: none;
-}
-
-.site-nav a:hover,
-.site-nav a[aria-current="page"] {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
-
-/* Lang switch */
+/* Lang switch — destination locale only */
 .lang-switch {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  line-height: 1.4;
+  justify-content: center;
+  min-width: 44px;
   min-height: 44px;
+  padding: var(--space-2) var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--fg);
+  text-decoration: none;
 }
 
-.lang-switch a,
-.lang-switch span {
+.lang-switch:hover {
   color: var(--fg-muted);
   text-decoration: none;
-  padding: var(--space-2) var(--space-1);
 }
 
-.lang-switch a:hover {
-  color: var(--fg);
-  text-decoration: underline;
+.lang-switch:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
-.lang-switch [aria-current="true"] {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
-
-.lang-switch__sep {
-  color: var(--border);
-  user-select: none;
-}
-
-/* Theme switch */
+/* Theme switch — icon only */
 .theme-switch {
   appearance: none;
   background: transparent;
   border: 0;
   margin: 0;
-  padding: var(--space-2) var(--space-1);
-  min-height: 44px;
-  font-family: var(--font-sans);
-  font-size: var(--text-nav);
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--fg-muted);
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
   cursor: pointer;
   transition: color 160ms ease;
+  position: relative;
 }
 
 .theme-switch:hover {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
+  color: var(--fg-muted);
 }
 
 .theme-switch:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+.theme-switch__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* Dark theme → show sun (switch to light); light → show moon */
+.theme-switch__icon--sun {
+  display: none;
+}
+
+.theme-switch__icon--moon {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-switch__icon--sun {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-switch__icon--moon {
+  display: none;
+}
+
+html[data-theme="light"] .theme-switch__icon--sun {
+  display: none;
+}
+
+html[data-theme="light"] .theme-switch__icon--moon {
+  display: block;
 }
 
 /* Footer */
@@ -491,15 +477,6 @@ a:focus-visible {
     --text-display: 2.25rem;
     --text-title: 1.875rem;
     --text-body: 1.0625rem;
-  }
-
-  .site-header {
-    align-items: flex-start;
-  }
-
-  .site-header__right {
-    width: 100%;
-    justify-content: space-between;
   }
 
   body {

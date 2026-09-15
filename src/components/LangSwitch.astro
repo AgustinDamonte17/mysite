@@ -8,19 +8,15 @@ interface Props {
 
 const { lang } = Astro.props;
 const pathname = Astro.url.pathname;
-const esHref = switchLangPath(pathname, 'es');
-const enHref = switchLangPath(pathname, 'en');
+const destLang: Lang = lang === 'es' ? 'en' : 'es';
+const href = switchLangPath(pathname, destLang);
+const label = destLang === 'en' ? 'EN' : 'ES';
+const ariaLabel = destLang === 'en' ? 'English' : 'Español';
 ---
-<nav class="lang-switch" aria-label={lang === 'es' ? 'Idioma' : 'Language'}>
-  {lang === 'es' ? (
-    <span aria-current="true">ES</span>
-  ) : (
-    <a href={esHref} hreflang="es" lang="es">ES</a>
-  )}
-  <span class="lang-switch__sep" aria-hidden="true">|</span>
-  {lang === 'en' ? (
-    <span aria-current="true">EN</span>
-  ) : (
-    <a href={enHref} hreflang="en" lang="en">EN</a>
-  )}
-</nav>
+<a
+  class="lang-switch"
+  href={href}
+  hreflang={destLang}
+  lang={destLang}
+  aria-label={ariaLabel}
+>{label}</a>
