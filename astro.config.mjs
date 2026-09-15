@@ -2,10 +2,16 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
-// GitHub Pages project site: https://agustindamonte17.github.io/mysite/
-// Do NOT enable Pages in repo Settings until Agustín explicitly oks via Chieff.
+// GitHub Pages project site: base `/mysite`.
+// On Vercel, serve from domain root (`/`).
+const onVercel = Boolean(process.env.VERCEL);
+const base = onVercel ? '/' : '/mysite';
+const site = onVercel
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'agustindamonte.vercel.app'}`
+  : 'https://agustindamonte17.github.io';
+
 export default defineConfig({
-  site: 'https://agustindamonte17.github.io',
-  base: '/mysite',
+  site,
+  base,
   integrations: [mdx()],
 });
