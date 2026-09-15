@@ -2,14 +2,19 @@
 interface Props {
   title: string;
   lead?: string;
+  leadHtml?: string;
   variant?: 'display' | 'section';
 }
 
-const { title, lead, variant = 'display' } = Astro.props;
+const { title, lead, leadHtml, variant = 'display' } = Astro.props;
 const headingClass =
   variant === 'section' ? 'page-title__heading page-title__heading--section' : 'page-title__heading';
 ---
 <header class="page-title">
   <h1 class={headingClass}>{title}</h1>
-  {lead && <p class="page-title__lead">{lead}</p>}
+  {leadHtml ? (
+    <p class="page-title__lead" set:html={leadHtml} />
+  ) : (
+    lead && <p class="page-title__lead">{lead}</p>
+  )}
 </header>
