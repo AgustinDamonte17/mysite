@@ -1,0 +1,32 @@
+---
+import { withBase } from '../lib/content';
+import type { Lang } from '../lib/content';
+
+interface Item {
+  slug: string;
+  title: string;
+  date?: string;
+  excerpt?: string;
+}
+
+interface Props {
+  lang: Lang;
+  items: Item[];
+}
+
+const { lang, items } = Astro.props;
+---
+<ul class="item-list">
+  {items.map((item) => (
+    <li class="item-list__item">
+      <a class="item-list__title" href={withBase(`/${lang}/posts/${item.slug}/`)}>{item.title}</a>
+      {(item.date || item.excerpt) && (
+        <span class="item-list__meta">
+          {item.date && <time datetime={item.date}>{item.date}</time>}
+          {item.date && item.excerpt ? ' — ' : ''}
+          {item.excerpt ?? ''}
+        </span>
+      )}
+    </li>
+  ))}
+</ul>

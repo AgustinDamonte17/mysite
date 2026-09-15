@@ -1,0 +1,16 @@
+---
+interface Props {
+  date?: string;
+}
+
+const { date } = Astro.props;
+
+function formatDate(value: string): string {
+  // Keep ISO YYYY-MM-DD readable; avoid inventing locales beyond date string
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  // Use UTC parts so pubDate strings don't shift
+  return value.length >= 10 ? value.slice(0, 10) : value;
+}
+---
+{date && <p class="post-meta"><time datetime={String(date)}>{formatDate(String(date))}</time></p>}

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getPosts, getPost, ui } from '../../../lib/content';
+import PostMeta from '../../../components/PostMeta.astro';
+import Prose from '../../../components/Prose.astro';
+import { getPosts, getPost, ui, withBase } from '../../../lib/content';
 
 export function getStaticPaths() {
   const lang = 'es' as const;
@@ -14,12 +16,20 @@ const post = getPost(lang, slug!);
 if (!post) throw new Error(`Missing post ${slug}`);
 const Content = post.Content as any;
 ---
-<BaseLayout lang={lang} title={String(post.frontmatter.title)} description={String(post.frontmatter.description ?? '')}>
+<BaseLayout
+  lang={lang}
+  title={String(post.frontmatter.title)}
+  description={String(post.frontmatter.description ?? '')}
+  measure="post"
+>
   <article>
-    <h1>{String(post.frontmatter.title)}</h1>
-    <p class="meta">{String(post.frontmatter.pubDate ?? '')}</p>
-    <div class="prose">
+    <PostMeta date={post.frontmatter.pubDate ? String(post.frontmatter.pubDate) : undefined} />
+    <h1 class="post-title">{String(post.frontmatter.title)}</h1>
+    <Prose>
       <Content />
-    </div>
+    </Prose>
+    <p class="post-back">
+      <a href={withBase(`/${lang}/posts/`)}>← {t.postsHeading}</a>
+    </p>
   </article>
 </BaseLayout>

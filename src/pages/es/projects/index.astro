@@ -1,19 +1,18 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getProjects, ui, withBase } from '../../../lib/content';
+import PageTitle from '../../../components/PageTitle.astro';
+import ProjectList from '../../../components/ProjectList.astro';
+import { getProjects, ui } from '../../../lib/content';
 
 const lang = 'es' as const;
 const t = ui[lang];
-const projects = getProjects(lang);
+const items = getProjects(lang).map((p) => ({
+  slug: p.slug,
+  title: String(p.frontmatter.title),
+  blurb: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
+}));
 ---
-<BaseLayout lang={lang} title={t.projectsHeading}>
-  <h1>{t.projectsHeading}</h1>
-  <ul class="list">
-    {projects.map((p) => (
-      <li>
-        <a href={withBase(`/${lang}/projects/${p.slug}/`)}>{String(p.frontmatter.title)}</a>
-        <div class="meta">{String(p.frontmatter.description ?? '')}</div>
-      </li>
-    ))}
-  </ul>
+<BaseLayout lang={lang} title={t.projectsHeading} measure="home">
+  <PageTitle title={t.projectsHeading} variant="section" />
+  <ProjectList lang={lang} items={items} />
 </BaseLayout>

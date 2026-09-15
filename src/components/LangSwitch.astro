@@ -1,0 +1,26 @@
+---
+import type { Lang } from '../lib/content';
+import { switchLangPath } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const pathname = Astro.url.pathname;
+const esHref = switchLangPath(pathname, 'es');
+const enHref = switchLangPath(pathname, 'en');
+---
+<nav class="lang-switch" aria-label={lang === 'es' ? 'Idioma' : 'Language'}>
+  {lang === 'es' ? (
+    <span aria-current="true">ES</span>
+  ) : (
+    <a href={esHref} hreflang="es" lang="es">ES</a>
+  )}
+  <span class="lang-switch__sep" aria-hidden="true">|</span>
+  {lang === 'en' ? (
+    <span aria-current="true">EN</span>
+  ) : (
+    <a href={enHref} hreflang="en" lang="en">EN</a>
+  )}
+</nav>

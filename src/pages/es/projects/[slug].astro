@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getProjects, getProject, ui } from '../../../lib/content';
+import PostMeta from '../../../components/PostMeta.astro';
+import Prose from '../../../components/Prose.astro';
+import { getProjects, getProject, ui, withBase } from '../../../lib/content';
 
 export function getStaticPaths() {
   const lang = 'es' as const;
@@ -8,17 +10,26 @@ export function getStaticPaths() {
 }
 
 const lang = 'es' as const;
+const t = ui[lang];
 const { slug } = Astro.params;
 const project = getProject(lang, slug!);
 if (!project) throw new Error(`Missing project ${slug}`);
 const Content = project.Content as any;
 ---
-<BaseLayout lang={lang} title={String(project.frontmatter.title)} description={String(project.frontmatter.description ?? '')}>
+<BaseLayout
+  lang={lang}
+  title={String(project.frontmatter.title)}
+  description={String(project.frontmatter.description ?? '')}
+  measure="post"
+>
   <article>
-    <h1>{String(project.frontmatter.title)}</h1>
-    <p class="meta">{String(project.frontmatter.year ?? '')}</p>
-    <div class="prose">
+    <PostMeta date={project.frontmatter.year ? String(project.frontmatter.year) : undefined} />
+    <h1 class="post-title">{String(project.frontmatter.title)}</h1>
+    <Prose>
       <Content />
-    </div>
+    </Prose>
+    <p class="post-back">
+      <a href={withBase(`/${lang}/projects/`)}>← {t.projectsHeading}</a>
+    </p>
   </article>
 </BaseLayout>

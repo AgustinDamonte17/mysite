@@ -87,7 +87,8 @@ export const ui = {
     siteTitle: 'Agustín Damonte',
     postsHeading: 'Escritos',
     projectsHeading: 'Proyectos',
-    homeIntro: 'Sitio personal. ES es la fuente de verdad; EN es el gemelo.',
+    homeIntro: 'Sitio personal. Notas y proyectos.',
+    seeAll: 'Ver todos',
   },
   en: {
     home: 'Home',
@@ -98,6 +99,7 @@ export const ui = {
     siteTitle: 'Agustín Damonte',
     postsHeading: 'Writing',
     projectsHeading: 'Projects',
-    homeIntro: 'Personal site. ES is the source of truth; EN is the twin.',
+    homeIntro: 'Personal site. Notes and projects.',
+    seeAll: 'See all',
   },
 } as const;

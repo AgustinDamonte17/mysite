@@ -1,19 +1,19 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getPosts, ui, withBase } from '../../../lib/content';
+import PageTitle from '../../../components/PageTitle.astro';
+import PostList from '../../../components/PostList.astro';
+import { getPosts, ui } from '../../../lib/content';
 
 const lang = 'en' as const;
 const t = ui[lang];
-const posts = getPosts(lang);
+const items = getPosts(lang).map((p) => ({
+  slug: p.slug,
+  title: String(p.frontmatter.title),
+  date: p.frontmatter.pubDate ? String(p.frontmatter.pubDate) : undefined,
+  excerpt: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
+}));
 ---
-<BaseLayout lang={lang} title={t.postsHeading}>
-  <h1>{t.postsHeading}</h1>
-  <ul class="list">
-    {posts.map((p) => (
-      <li>
-        <a href={withBase(`/${lang}/posts/${p.slug}/`)}>{String(p.frontmatter.title)}</a>
-        <div class="meta">{String(p.frontmatter.pubDate ?? '')} — {String(p.frontmatter.description ?? '')}</div>
-      </li>
-    ))}
-  </ul>
+<BaseLayout lang={lang} title={t.postsHeading} measure="home">
+  <PageTitle title={t.postsHeading} variant="section" />
+  <PostList lang={lang} items={items} />
 </BaseLayout>
