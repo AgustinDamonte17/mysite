@@ -60,6 +60,24 @@ export function getProject(lang: Lang, slug: string) {
   return getProjects(lang).find((p) => p.slug === slug);
 }
 
+
+/** Human-readable date for listings; ES→es-ES, EN→en-US. Uses UTC calendar day. */
+export function formatDate(date: string | Date, lang: Lang): string {
+  const locale = lang === 'es' ? 'es-ES' : 'en-US';
+  const raw = typeof date === 'string' ? date : date.toISOString();
+  const m = String(raw).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const d = m
+    ? new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])))
+    : new Date(raw);
+  if (Number.isNaN(d.getTime())) return String(raw);
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(d);
+}
+
 /** Build a path under the configured Astro `base`. */
 export function withBase(path: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');

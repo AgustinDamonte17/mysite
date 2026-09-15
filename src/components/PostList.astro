@@ -1,5 +1,5 @@
 ---
-import { withBase } from '../lib/content';
+import { withBase, formatDate } from '../lib/content';
 import type { Lang } from '../lib/content';
 
 interface Item {
@@ -22,7 +22,7 @@ const { lang, items } = Astro.props;
       <a class="item-list__title" href={withBase(`/${lang}/posts/${item.slug}/`)}>{item.title}</a>
       {(item.date || item.excerpt) && (
         <span class="item-list__meta">
-          {item.date && <time datetime={item.date}>{item.date}</time>}
+          {item.date && <time datetime={item.date}>{formatDate(item.date, lang)}</time>}
           {item.date && item.excerpt ? ' — ' : ''}
           {item.excerpt ?? ''}
         </span>

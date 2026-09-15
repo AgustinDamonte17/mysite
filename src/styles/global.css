@@ -134,9 +134,9 @@ a:focus-visible {
 }
 
 .site-header__brand {
-  font-family: var(--font-serif);
-  font-size: 1.0625rem;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: var(--text-nav);
+  font-weight: 500;
   color: var(--fg);
   text-decoration: none;
   line-height: 1.3;
