@@ -164,6 +164,33 @@ a:focus-visible {
   gap: 1.125rem;
 }
 
+/* Home mark — typographic A → locale home */
+.home-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-2);
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.home-mark:hover {
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.home-mark:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 /* Lang switch — destination locale only */
 .lang-switch {
   display: inline-flex;

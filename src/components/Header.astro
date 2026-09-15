@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '../lib/content';
+import HomeMark from './HomeMark.astro';
 import LangSwitch from './LangSwitch.astro';
 import ThemeSwitch from './ThemeSwitch.astro';
 
@@ -11,6 +12,7 @@ const { lang } = Astro.props;
 ---
 <header class="site-header">
   <div class="site-header__cluster">
+    <HomeMark lang={lang} />
     <LangSwitch lang={lang} />
     <ThemeSwitch lang={lang} />
   </div>

@@ -1,0 +1,13 @@
+---
+import type { Lang } from '../lib/content';
+import { ui, withBase } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const href = withBase(`/${lang}/`);
+const ariaLabel = ui[lang].home;
+---
+<a class="home-mark" href={href} aria-label={ariaLabel}>A</a>
