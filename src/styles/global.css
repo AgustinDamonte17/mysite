@@ -1,9 +1,11 @@
 :root {
-  --bg: #fafaf8;
-  --fg: #1a1a1a;
-  --fg-muted: #5c5c5c;
-  --border: #e8e6e1;
-  --accent: #1a1a1a;
+  /* Color tokens — dark default (system preference never wins) */
+  --bg: #1c1c1a;
+  --fg: #f2efe8;
+  --fg-muted: #a8a49a;
+  --border: #2e2e2a;
+  --accent: #f2efe8;
+  --focus-ring: #f2efe8;
 
   --font-serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -38,10 +40,33 @@
   --ease: 160ms ease;
 }
 
+html[data-theme="dark"] {
+  --bg: #1c1c1a;
+  --fg: #f2efe8;
+  --fg-muted: #a8a49a;
+  --border: #2e2e2a;
+  --accent: #f2efe8;
+  --focus-ring: #f2efe8;
+}
+
+html[data-theme="light"] {
+  --bg: #fafaf8;
+  --fg: #1c1c1a;
+  --fg-muted: #5c5c5c;
+  --border: #e8e6e1;
+  --accent: #1c1c1a;
+  --focus-ring: #1c1c1a;
+}
+
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html {
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 html,
@@ -59,6 +84,7 @@ body {
   line-height: 1.7;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 a {
@@ -74,7 +100,7 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -206,6 +232,34 @@ a:focus-visible {
 .lang-switch__sep {
   color: var(--border);
   user-select: none;
+}
+
+/* Theme switch */
+.theme-switch {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-1);
+  min-height: 44px;
+  font-family: var(--font-sans);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.theme-switch:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.theme-switch:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Footer */

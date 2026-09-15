@@ -1,0 +1,57 @@
+---
+import type { Lang } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const toLight = lang === 'es' ? 'Claro' : 'Light';
+const toDark = lang === 'es' ? 'Oscuro' : 'Dark';
+const ariaLabel = lang === 'es' ? 'Cambiar tema' : 'Toggle theme';
+---
+<button
+  type="button"
+  class="theme-switch"
+  data-theme-switch
+  data-label-to-light={toLight}
+  data-label-to-dark={toDark}
+  role="switch"
+  aria-checked="true"
+  aria-label={ariaLabel}
+>
+  {toLight}
+</button>
+<script is:inline>
+  (function () {
+    var KEY = 'mysite-theme';
+    function current() {
+      var t = document.documentElement.getAttribute('data-theme');
+      return t === 'light' ? 'light' : 'dark';
+    }
+    function sync(btn) {
+      if (!btn) return;
+      var theme = current();
+      var label =
+        theme === 'dark'
+          ? btn.getAttribute('data-label-to-light')
+          : btn.getAttribute('data-label-to-dark');
+      btn.textContent = label;
+      btn.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
+    }
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem(KEY, theme);
+      } catch (e) {}
+      document.querySelectorAll('[data-theme-switch]').forEach(sync);
+    }
+    function onClick(e) {
+      var btn = e.target.closest('[data-theme-switch]');
+      if (!btn) return;
+      setTheme(current() === 'dark' ? 'light' : 'dark');
+    }
+    document.addEventListener('click', onClick);
+    document.querySelectorAll('[data-theme-switch]').forEach(sync);
+  })();
+</script>

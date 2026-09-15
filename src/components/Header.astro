@@ -2,6 +2,7 @@
 import type { Lang } from '../lib/content';
 import { ui, withBase } from '../lib/content';
 import LangSwitch from './LangSwitch.astro';
+import ThemeSwitch from './ThemeSwitch.astro';
 
 interface Props {
   lang: Lang;
@@ -32,5 +33,6 @@ function isCurrent(match: string): boolean {
       ))}
     </nav>
     <LangSwitch lang={lang} />
+    <ThemeSwitch lang={lang} />
   </div>
 </header>
