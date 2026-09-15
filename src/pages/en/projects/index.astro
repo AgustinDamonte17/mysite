@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getProjects, ui, withBase } from '../../../lib/content';
+
+const lang = 'en' as const;
+const t = ui[lang];
+const projects = getProjects(lang);
+---
+<BaseLayout lang={lang} title={t.projectsHeading}>
+  <h1>{t.projectsHeading}</h1>
+  <ul class="list">
+    {projects.map((p) => (
+      <li>
+        <a href={withBase(`/${lang}/projects/${p.slug}/`)}>{String(p.frontmatter.title)}</a>
+        <div class="meta">{String(p.frontmatter.description ?? '')}</div>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPosts, ui, withBase } from '../../../lib/content';
+
+const lang = 'en' as const;
+const t = ui[lang];
+const posts = getPosts(lang);
+---
+<BaseLayout lang={lang} title={t.postsHeading}>
+  <h1>{t.postsHeading}</h1>
+  <ul class="list">
+    {posts.map((p) => (
+      <li>
+        <a href={withBase(`/${lang}/posts/${p.slug}/`)}>{String(p.frontmatter.title)}</a>
+        <div class="meta">{String(p.frontmatter.pubDate ?? '')} — {String(p.frontmatter.description ?? '')}</div>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

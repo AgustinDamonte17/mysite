@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPosts, getPost, ui } from '../../../lib/content';
+
+export function getStaticPaths() {
+  const lang = 'es' as const;
+  return getPosts(lang).map((p) => ({ params: { slug: p.slug } }));
+}
+
+const lang = 'es' as const;
+const t = ui[lang];
+const { slug } = Astro.params;
+const post = getPost(lang, slug!);
+if (!post) throw new Error(`Missing post ${slug}`);
+const Content = post.Content as any;
+---
+<BaseLayout lang={lang} title={String(post.frontmatter.title)} description={String(post.frontmatter.description ?? '')}>
+  <article>
+    <h1>{String(post.frontmatter.title)}</h1>
+    <p class="meta">{String(post.frontmatter.pubDate ?? '')}</p>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
