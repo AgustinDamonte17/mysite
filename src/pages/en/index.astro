@@ -18,9 +18,12 @@ const projects = getProjects(lang).slice(0, 5).map((p) => ({
   title: String(p.frontmatter.title),
   blurb: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
 }));
+
+const leadHtml =
+  "Welcome to my personal page. Here you'll find posts about personal and work ideas and projects. I'm a developer at Quantum América, co-founder and partner at Iris Energía. Right now I'm mainly <em>Building with AI</em>.";
 ---
 <BaseLayout lang={lang} description={t.homeIntro} measure="home">
-  <PageTitle title={t.siteTitle} />
+  <PageTitle title={t.siteTitle} leadHtml={leadHtml} />
 
   <section class="home-section" aria-labelledby="writing-heading">
     <h2 id="writing-heading" class="home-section__heading">{t.postsHeading}</h2>
