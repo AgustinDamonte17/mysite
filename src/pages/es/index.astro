@@ -11,12 +11,10 @@ const posts = getPosts(lang).slice(0, 5).map((p) => ({
   slug: p.slug,
   title: String(p.frontmatter.title),
   date: p.frontmatter.pubDate ? String(p.frontmatter.pubDate) : undefined,
-  excerpt: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
 }));
 const projects = getProjects(lang).slice(0, 5).map((p) => ({
   slug: p.slug,
   title: String(p.frontmatter.title),
-  blurb: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
 }));
 
 const leadHtml =

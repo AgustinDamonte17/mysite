@@ -1,11 +1,11 @@
 ---
-import { withBase } from '../lib/content';
+import { withBase, formatDate } from '../lib/content';
 import type { Lang } from '../lib/content';
 
 interface Item {
   slug: string;
   title: string;
-  blurb?: string;
+  date?: string;
 }
 
 interface Props {
@@ -19,7 +19,11 @@ const { lang, items } = Astro.props;
   {items.map((item) => (
     <li class="item-list__item">
       <a class="item-list__title" href={withBase(`/${lang}/projects/${item.slug}/`)}>{item.title}</a>
-      {item.blurb && <span class="item-list__blurb">{item.blurb}</span>}
+      {item.date && (
+        <span class="item-list__meta">
+          <time datetime={item.date}>{formatDate(item.date, lang)}</time>
+        </span>
+      )}
     </li>
   ))}
 </ul>

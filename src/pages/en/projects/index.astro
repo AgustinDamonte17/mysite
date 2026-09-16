@@ -9,7 +9,6 @@ const t = ui[lang];
 const items = getProjects(lang).map((p) => ({
   slug: p.slug,
   title: String(p.frontmatter.title),
-  blurb: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
 }));
 ---
 <BaseLayout lang={lang} title={t.projectsHeading} measure="home">

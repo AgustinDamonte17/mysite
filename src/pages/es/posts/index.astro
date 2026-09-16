@@ -10,7 +10,6 @@ const items = getPosts(lang).map((p) => ({
   slug: p.slug,
   title: String(p.frontmatter.title),
   date: p.frontmatter.pubDate ? String(p.frontmatter.pubDate) : undefined,
-  excerpt: p.frontmatter.description ? String(p.frontmatter.description) : undefined,
 }));
 ---
 <BaseLayout lang={lang} title={t.postsHeading} measure="home">
