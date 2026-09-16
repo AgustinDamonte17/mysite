@@ -105,7 +105,7 @@ export const ui = {
     siteTitle: 'Agustín Damonte',
     postsHeading: 'Escritos',
     projectsHeading: 'Proyectos',
-    homeIntro: 'Bienvenidos a mi página personal. Acá van publicaciones sobre ideas y proyectos personales y laborales. Soy desarrollador en Quantum América, co-fundador y socio de Iris Energía. Actualmente estoy principalmente Building with AI.',
+    homeIntro: 'Bienvenidos a mi blog. Acá publicaré mis ideas y proyectos personales/laborales. Soy desarrollador en Quantum América, co-fundador y socio de Iris Energía. Actualmente estoy principalmente construyendo con IA.',
     seeAll: 'Ver todos',
   },
   en: {
