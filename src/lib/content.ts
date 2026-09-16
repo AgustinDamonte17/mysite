@@ -117,7 +117,7 @@ export const ui = {
     siteTitle: 'Agustín Damonte',
     postsHeading: 'Writing',
     projectsHeading: 'Projects',
-    homeIntro: 'Welcome to my personal page. Here you\'ll find posts about personal and work ideas and projects. I\'m a developer at Quantum América, co-founder and partner at Iris Energía. Right now I\'m mainly Building with AI.',
+    homeIntro: 'Welcome to my blog. Here I\'ll publish my personal and work ideas and projects. I\'m a developer at Quantum América, co-founder and partner at Iris Energía. Right now I\'m mainly building with AI.',
     seeAll: 'See all',
   },
 } as const;
