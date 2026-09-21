@@ -1,0 +1,177 @@
+---
+title: "Software architecture: AI integration"
+description: "Use the LLM to understand intent and work with ambiguity; deterministic software for state, calculations, and rules. That way the product accumulates capability, not just good answers."
+pubDate: 2026-09-21
+---
+
+Integrating artificial intelligence into an application can look easy. The user writes an instruction. The application sends it to a model. The model responds. In a few hours there is already something that understands natural language and produces fairly impressive results.
+
+![diagram](/images/arquitectura-ia/en/image1.png)
+
+For a demo that may be enough. The problem starts when we try to build a product on top of that flow. Three fairly concrete difficulties show up: the cost of processing large amounts of context, inconsistency between results, and the difficulty of turning improvements into lasting capabilities of the software.
+
+One answer can be excellent and the next, faced with a similar situation, take another path. We can fix the prompt, add more instructions, and use a more powerful model. The result improves. Context, cost, and dependence on the model interpreting the same rules correctly on every operation also grow.
+
+![diagram](/images/arquitectura-ia/en/image2.png)
+
+The architecture question shows up fairly quickly:
+
+What should AI resolve, and what should stay defined inside the software?
+
+The hypothesis I'm exploring is simple: **use the LLM to understand intents, work with ambiguity, and propose alternatives; use deterministic software to keep state, run calculations, and apply rules.**
+
+It isn't about putting arbitrary limits on AI. It's about giving it a solid system to work on top of.
+
+## The problem of asking the model (LLM) for everything
+
+Language models are good at interpreting requests that traditional software would find awkward. Someone can say:
+
+> "I want this to have more space, but without changing the rest too much."
+
+There are no exact parameters. There is an intention that depends on context and probably allows several solutions. An LLM can understand the request, identify what information is missing, and propose reasonable alternatives.
+
+The situation changes when it comes time to execute the change.
+
+To do that, the system needs to know the project's current state, respect its relationships, apply constraints, and check that the result is still valid. If we hand all of those responsibilities to the LLM, every operation requires rebuilding a large part of the reasoning.
+
+The model rereads rules it already read. It reinterprets relationships the system already knew. It repeats calculations and returns a new representation of the result. We spend tokens again so it can rethink something that, in many cases, we could already have turned into logic.
+
+Besides, an LLM is probabilistic. It can respond differently to similar inputs. That flexibility is valuable when you need to interpret or explore. To calculate a quantity, keep a geometric relationship, or check a limit, I'd rather have a much less imaginative function.
+
+## Three pains of the direct approach
+
+The first problem is **cost**.
+
+As a project grows, so does the information needed to understand it. If we send its full state, the conversation history, domain rules, and documentation on every query, token use scales with the product.
+
+Cost doesn't depend only on the API price. It also includes latency, retries, corrections, and oversight. A cheap model that forces you to repeat an operation three times can turn out fairly expensive.
+
+The second problem is **reliability**.
+
+That a response has the expected format does not mean its content is correct. The model can produce a perfectly structured operation and still have misread the intent, used the wrong reference, or ignored a constraint. For a conversation, that can be tolerable. For software that modifies data, runs calculations, or takes actions, it is not.
+
+The third problem is the **difficulty of building on results**.
+
+We can improve a prompt after catching an error. But that improvement remains an instruction the model will have to interpret on every future run. It does not necessarily become a stable, testable capability of the product.
+
+If we discover that a given condition must always hold, it is more valuable to turn it into an executable rule. From then on, every operation can be validated the same way. The improvement is built into the system.
+
+That is where an important difference appears between getting a good answer and building software.
+
+## AI as an interpretation layer
+
+The architecture I'm exploring places the LLM in a specific position: between human intent and the system's capabilities.
+
+![diagram](/images/arquitectura-ia/en/image3.png)
+
+The user can express themselves flexibly. The interface adds information it already knows: which element is selected, which view is open, or where the interaction happened.
+
+The context engine retrieves the relevant data. The LLM interprets the intent and proposes a structured action. The domain engine validates that action, runs the logic, and updates state.
+
+For example, the model might produce something like this:
+
+```json
+{
+  "action": "move_and_align",
+  "target_id": "element_142",
+  "reference_id": "element_139",
+  "direction": "left"
+}
+```
+
+The model does not modify the project directly. It requests an operation the software knows how to execute.
+
+Limits and scope must be clearly established in the system. AI can be wrong when choosing the action, but it does not have unlimited freedom to alter the system. The command layer defines which operations exist, which parameters they accept, and which permissions they require.
+
+Then the domain engine comes in: it checks identifiers, applies constraints, calculates consequences, and decides whether the change is valid. If it is, it updates state. If not, it returns an error so the user can keep adjusting definitions or the system can apply some criterion to resolve the error.
+
+A valid JSON does not guarantee a sensible decision. It only gives us a boundary where we can start controlling it.
+
+## Software needs its own memory
+
+An application's state should not live in the chat history.
+
+The conversation holds requests, responses, trials, errors, and decisions that may already have been discarded. If the model has to reconstruct from there which version is still current, the chance of error rises with every interaction.
+
+The application needs its own domain model: a structured representation of entities, their properties, and their relationships. This model acts as the source of truth. The interface displays it. The domain engine modifies it. AI queries only the part it needs.
+
+This also lets you build on prior work. If a rule changes several relationships, the result is stored in the project state. The next operation starts from that validated state; it does not depend on the model remembering how it got there.
+
+The conversation helps interpret the process. It does not have to carry the whole project on its shoulders.
+
+## Giving context does not mean sending everything
+
+AI works better when it has context. From there it is easy to jump to a fairly expensive conclusion: send everything.
+
+If the user is modifying an element, the model probably needs to know its properties, related objects, and the constraints that affect that operation. It does not need to receive every entity in the project.
+
+That calls for a context engine: a layer that selects the relevant information before calling the model.
+
+![diagram](/images/arquitectura-ia/en/image4.png)
+
+Stable parts can be reused or cached when the infrastructure allows it. Dynamic parts are built for each operation.
+
+If the initial information is not enough, the model can fetch more through tools. Context expands as the task requires it, instead of traveling in full just in case. That cuts tokens, but also noise.
+
+## Turning knowledge into logic
+
+A specialized application can access manuals, standards, or documentation through search and retrieval. The model receives the relevant fragments and uses them to answer or explain a decision.
+
+That works for dealing with extensive or changing knowledge. But reading a rule and executing a rule are different things.
+
+If a condition can be expressed like this:
+
+```python
+if condition_z:
+    assert x >= y
+```
+
+it is worth asking whether it should become part of the domain engine.
+
+Formalizing it takes work. You have to understand when it applies, account for exceptions, and keep it up to date. In return, you get a reproducible, testable validation that is much cheaper to run.
+
+The knowledge base keeps the sources and explanations. The rules engine holds what the system has already learned to check.
+
+![diagram](/images/arquitectura-ia/en/image5.png)
+
+With each formalized rule, the product accumulates real capability. The improvement no longer depends on the model correctly interpreting the same paragraph on every future query.
+
+That process seems central to me for building specialized applications with AI: progressively turning domain knowledge into computable structure.
+
+## Using different models for different jobs
+
+Not every request needs the same level of reasoning.
+
+A routine operation can be handled with a direct command or a small model. An ambiguous request that requires comparing alternatives and consulting several sources may justify a more capable model.
+
+The architecture should allow that routing.
+
+First it can try to recognize known operations. Then use a fast model to interpret simple tasks. Only when complexity requires it does it scale to a more powerful model.
+
+![diagram](/images/arquitectura-ia/en/image6.png)
+
+The goal is not always to pick the cheapest option. It is to reduce the cost of completing a task correctly. A wrong answer generates more calls, corrections, and lost time.
+
+It is also worth logging what happened: what the user asked for, what context the model received, what action it proposed, which validations ran, and what the result was.
+
+Without that record, when something goes wrong it is hard to know whether interpretation failed, context selection, a tool, or a domain rule.
+
+## An improvement that accumulates
+
+What interests me most about this architecture is that it lets you take advantage of two very different kinds of software.
+
+The **LLM** works well with language, ambiguity, and intent. It can understand incomplete requests, retrieve information, and explore solutions.
+
+**Deterministic software** works well with state, calculations, constraints, and repetition. It can run the same rule thousands of times without having to rediscover it.
+
+The combination aims to address the three initial pains.
+
+It cuts costs because the model receives less context and only participates when it adds value. It raises reliability because actions go through commands, validations, and rules. And it lets you build on results because formalized knowledge accumulates inside the product.
+
+![diagram](/images/arquitectura-ia/en/image7.png)
+
+The depth of an AI application probably is not in how many things we ask the model to do. It may be in everything we build underneath so its capabilities are useful, consistent, and economical.
+
+An ever more capable model improves the interpretation layer. The domain engine, the data, and the rules keep accumulating and stay.
+
+AI understands what we want to do. The software takes care of producing a quality product.
